@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import getAuthToken from "../api/getAuthToken";
 import { useStore } from "../stores";
 const store = useStore();
@@ -8,6 +8,7 @@ const showPass = ref(false);
 const username = ref("");
 const password = ref("");
 const loading = ref(false);
+const router = useRouter();
 const login = async () => {
   try {
     loading.value = true;
@@ -15,7 +16,7 @@ const login = async () => {
       loading.value = false;
       store.isUser = true;
       store.userDetails = res;
-      console.log(res);
+      router.push("/");
     });
   } catch (error) {
     console.error("Failed to get Auth Token:", error);

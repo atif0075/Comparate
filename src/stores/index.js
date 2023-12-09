@@ -13,6 +13,7 @@ export const useStore = defineStore("comparateStore", {
       this.isUser = false;
       this.user = null;
       this.userDetails = {};
+      this.router.push("/login");
     },
   },
   persist: true,
