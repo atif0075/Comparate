@@ -37,40 +37,22 @@ const router = createRouter({
   linkExactActiveClass: "active",
 });
 
-// router.beforeEach((to, from, next) => {
-//   const store = useStore();
-//   if (store.isUser) {
-//     if (to.name === "Login" || to.name === "Register" || to.name === "Home") {
-//       if (store.userDetails.userType === "customer") {
-//         return next("/customer/home");
-//       } else if (store.userDetails.userType === "seller") {
-//         return next("/seller/home");
-//       }
-//     }
-//   }
-
-//   // Check if the route requires authentication
-//   if (to.meta.requireAuth) {
-//     // Check if the user is logged in
-//     if (!store.isUser) {
-//       // Redirect to the login page if not logged in
-//       return next("/auth/login");
-//     }
-
-//     // Check if the user has the required role
-//     if (to.meta.role && store.userDetails.userType !== to.meta.role) {
-//       // Redirect to the appropriate page based on the user's role
-//       if (store.userDetails.userType === "customer") {
-//         return next("/customer/home");
-//       } else if (store.userDetails.userType === "seller") {
-//         return next("/seller/home");
-//       }
-//     }
-//   }
-
-//   // Continue to the next route
-//   next();
-// });
+router.beforeEach((to, from, next) => {
+  const store = useStore();
+  if (store.isUser) {
+    if (to.name === "Login") {
+      next({ name: "Home" });
+    } else {
+      next();
+    }
+  } else {
+    if (to.name === "Login") {
+      next();
+    } else {
+      next({ name: "Login" });
+    }
+  }
+});
 
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title} | Comparate`;

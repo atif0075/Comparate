@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useStore = defineStore("afrihouzStore", {
+export const useStore = defineStore("comparateStore", {
   state: () => ({
     isUser: false,
     user: null,
@@ -8,6 +8,12 @@ export const useStore = defineStore("afrihouzStore", {
     isDark: false,
     lang: "en",
   }),
-  actions: {},
+  actions: {
+    logout() {
+      this.isUser = false;
+      this.user = null;
+      this.userDetails = {};
+    },
+  },
   persist: true,
 });

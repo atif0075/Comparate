@@ -1,5 +1,26 @@
 <script setup>
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
+import getAuthToken from "../api/getAuthToken";
+import { useStore } from "../stores";
+const store = useStore();
+const showPass = ref(false);
+const username = ref("");
+const password = ref("");
+const loading = ref(false);
+const login = async () => {
+  try {
+    loading.value = true;
+    await getAuthToken(username.value, password.value).then((res) => {
+      loading.value = false;
+      store.isUser = true;
+      store.userDetails = res;
+      console.log(res);
+    });
+  } catch (error) {
+    console.error("Failed to get Auth Token:", error);
+  }
+};
 </script>
 <template>
   <div class="flex flex-col min-h-screen">
@@ -18,7 +39,7 @@ import { RouterLink } from "vue-router";
             <div
               class="flex items-center space-x-1 font-medium text-sm ml-auto"
             >
-              <span class="text-gray-500"> Not a Member yet? </span>
+              <span class="text-zinc-500"> Not a Member yet? </span>
               <RouterLink to="/register" class="text-blue-600 font-semibold">
                 Sign Up
               </RouterLink>
@@ -29,10 +50,10 @@ import { RouterLink } from "vue-router";
             <div class="w-full">
               <div class="card-body">
                 <div class="text-start mb-10">
-                  <h1 class="text-gray-900 mb-3 text-4xl font-semibold">
+                  <h1 class="text-zinc-900 mb-3 text-4xl font-semibold">
                     Sign In
                   </h1>
-                  <div class="text-gray-400 font-medium text-sm">
+                  <div class="text-zinc-400 font-medium text-sm">
                     Get unlimited access &amp; earn money
                   </div>
                 </div>
@@ -40,10 +61,11 @@ import { RouterLink } from "vue-router";
                 <div class="mb-8">
                   <input
                     type="text"
-                    placeholder="Email"
-                    name="email"
+                    placeholder="Username"
+                    name="username"
+                    v-model="username"
                     autocomplete="off"
-                    class="w-full p-2.5 bg-gray-50 focus:bg-gray-100 rounded-md outline-none"
+                    class="w-full p-2.5 bg-zinc-50 focus:bg-zinc-100 rounded-md outline-none"
                   />
                 </div>
 
@@ -51,13 +73,22 @@ import { RouterLink } from "vue-router";
                 <div class="mb-7 relative">
                   <!-- Password -->
                   <input
-                    type="password"
+                    :type="showPass ? 'text' : 'password'"
                     placeholder="Password"
                     name="password"
+                    v-model="password"
                     autocomplete="off"
-                    class="w-full p-2.5 bg-gray-50 focus:bg-gray-100 rounded-md outline-none"
+                    class="w-full pr-11 p-2.5 bg-zinc-50 focus:bg-zinc-100 rounded-md outline-none"
                   />
-                  <Icon icon="bi:eye-fill" class="absolute top-3 right-3" />
+                  <Icon
+                    @click="showPass = !showPass"
+                    :icon="
+                      showPass
+                        ? 'heroicons:eye-slash-solid'
+                        : 'heroicons:eye-20-solid'
+                    "
+                    class="w-5 h-5 absolute right-3 top-3 text-zinc-400 cursor-pointer"
+                  />
                 </div>
 
                 <div
@@ -75,21 +106,28 @@ import { RouterLink } from "vue-router";
 
                 <div class="flex justify-between items-center">
                   <button
-                    class="me-2 flex-shrink-0 px-5 py-3 text-sm rounded-md bg-blue-500 text-white"
+                    @click="login"
+                    class="me-2 flex items-center space-x-1 flex-shrink-0 px-5 py-3 text-sm rounded-md bg-blue-500 text-white"
                   >
-                    <span class="indicator-label"> Sign In </span>
+                    <span v-show="!loading"> Sign In </span>
+                    <span v-show="loading"> Please wait... </span>
+                    <Icon
+                      v-show="loading"
+                      class="w-5 h-5"
+                      icon="svg-spinners:ring-resize"
+                    />
                   </button>
 
                   <div class="flex items-center space-x-3">
-                    <div class="text-gray-500 text-sm">Or</div>
+                    <div class="text-zinc-500 text-sm">Or</div>
 
-                    <a href="#" class="bg-gray-50 rounded-full p-3">
+                    <a href="#" class="bg-zinc-50 rounded-full p-3">
                       <Icon icon="devicon:google" />
                     </a>
-                    <a href="#" class="bg-gray-50 rounded-full p-3">
+                    <a href="#" class="bg-zinc-50 rounded-full p-3">
                       <Icon icon="logos:facebook" />
                     </a>
-                    <a href="#" class="bg-gray-50 rounded-full p-3">
+                    <a href="#" class="bg-zinc-50 rounded-full p-3">
                       <Icon icon="logos:apple" />
                     </a>
                   </div>
@@ -99,10 +137,7 @@ import { RouterLink } from "vue-router";
           </div>
 
           <!-- Footer -->
-          <select>
-            <option value="">English</option>
-            <option value="">Spanish</option>
-          </select>
+          <language-drop />
         </div>
       </div>
 
