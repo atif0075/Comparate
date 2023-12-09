@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full">
+  <div class="w-full relative z-50">
     <Listbox v-model="selectedOption">
       <div class="relative mt-1">
         <ListboxButton
@@ -32,6 +32,7 @@
               as="template"
             >
               <li
+                @click="$emit('onChange', option)"
                 :class="[
                   active ? 'bg-amber-100 text-amber-900' : 'text-gray-900',
                   'relative cursor-default select-none p-2',
@@ -55,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, watch } from "vue";
 import {
   Listbox,
   ListboxButton,
@@ -68,4 +69,5 @@ const { options, selectedOption: initialSelectedOption } = defineProps([
   "selectedOption",
 ]);
 const selectedOption = ref(initialSelectedOption || "Select");
+const emit = defineEmits(["onChange"]);
 </script>
