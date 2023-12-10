@@ -17,7 +17,7 @@ export default async function getAuthToken(username, password) {
     };
 
     const response = await fetch(
-      "https://135.181.86.202:8000/api/token/",
+      "http://135.181.86.202:8000/api/token/",
       requestOptions
     );
     const result = await response.json();
