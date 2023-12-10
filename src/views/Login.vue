@@ -13,6 +13,7 @@ const login = async () => {
   try {
     loading.value = true;
     await getAuthToken(username.value, password.value).then((res) => {
+      console.log(res);
       loading.value = false;
       store.isUser = true;
       store.userDetails = res;
@@ -28,7 +29,11 @@ const login = async () => {
   <div class="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-800">
     <div class="flex flex-col lg:flex-row flex-auto">
       <a class="lg:hidden mx-auto pt-10">
-        <img alt="Logo" src="../assets/logo.svg" class="h-20 invert" />
+        <img
+          alt="Logo"
+          src="../assets/logo.svg"
+          class="h-20 invert dark:invert-0"
+        />
       </a>
 
       <div

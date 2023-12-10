@@ -21,17 +21,19 @@ const store = useStore();
           >
             <img
               alt="Man"
-              :src="`https://placehold.it/100x100?text=${store.userDetails.name.substring(
-                0,
-                1
-              )}`"
+              :src="`https://placehold.it/100x100?text=${
+                store.userDetails.name ? store.userDetails.name[0] : ''
+              }`"
               class="h-10 w-10 rounded-full object-cover"
             />
             <p class="ms-2 hidden text-left text-xs sm:block">
               <strong class="block font-medium dark:text-zinc-50"
                 >Welcome</strong
               >
-              <span class="text-zinc-500 dark:text-zinc-300">
+              <span
+                v-if="store.userDetails.name"
+                class="text-zinc-500 dark:text-zinc-300"
+              >
                 {{ store.userDetails.name }}
               </span>
             </p>

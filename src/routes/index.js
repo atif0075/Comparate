@@ -38,18 +38,24 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const store = useStore();
+  const store = useStore(); // Assuming useStore is a function that returns the Vuex store
+
+  // Check if the user is logged in
   if (store.isUser) {
+    // If the user is trying to access the login page, redirect to the Home page
     if (to.name === "Login") {
       next({ name: "Home" });
     } else {
+      // Allow the navigation to proceed
       next();
     }
   } else {
-    if (to.name === "Login") {
-      next();
-    } else {
+    // If the user is not logged in and trying to access a page other than the login page, redirect to the login page
+    if (to.name !== "Login") {
       next({ name: "Login" });
+    } else {
+      // Allow the navigation to proceed to the login page
+      next();
     }
   }
 });
