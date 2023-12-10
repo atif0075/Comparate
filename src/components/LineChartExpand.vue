@@ -12,12 +12,15 @@ import { LineChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 
 Chart.register(...registerables);
+const random = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
 
 const testData = {
   labels: ["", "", "", "", "", "", "", ""],
   datasets: [
     {
-      data: [20, 25, 20, 30, 20, 35, 22, 10],
+      data: [random, 25, 20, 30, 20, 35, 22, 10],
       backgroundColor: ["#fde2e1"],
       tension: 0.2,
       // make points radius 0

@@ -180,7 +180,7 @@ const searchInput = ref(null);
                       />
                     </button>
                     <el-dialog
-                      title="View Chart"
+                      title="Price Comparison"
                       v-model="product.view"
                       class="!w-full !max-w-2xl !rounded-2xl"
                     >
