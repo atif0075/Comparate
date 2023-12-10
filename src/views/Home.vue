@@ -110,7 +110,6 @@ watchEffect(async () => {
         </div>
       </div>
     </div>
-
     <div
       v-if="selectedLocation && selectedCompetitor && !loading"
       class="relative overflow-x-auto mt-10"

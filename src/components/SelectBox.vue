@@ -34,7 +34,9 @@
               <li
                 @click="$emit('onChange', option)"
                 :class="[
-                  active ? 'bg-green-100 text-green-900' : 'text-zinc-900 dark:text-white',
+                  active
+                    ? 'bg-green-100 text-green-900'
+                    : 'text-zinc-900 dark:text-white',
                   'relative cursor-default select-none p-2',
                 ]"
                 :title="option.name"
@@ -56,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, watch } from "vue";
+import { ref, watch } from "vue";
 import {
   Listbox,
   ListboxButton,

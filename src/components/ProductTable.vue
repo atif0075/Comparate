@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, toRef } from "vue";
-import { ElPagination } from "element-plus";
+import { ElPagination, ElDialog } from "element-plus";
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 const props = defineProps({
@@ -165,15 +165,27 @@ const searchInput = ref(null);
                       {{ product["Price Difference"].toFixed(2) }}
                     </span>
                   </td>
-                  <td class="px-4 py-4 text-sm whitespace-nowrap">Chart</td>
+                  <td class="px-4 py-4 text-sm whitespace-nowrap">
+                    <LineChart />
+                  </td>
 
                   <td class="px-4 py-4 text-sm whitespace-nowrap">
-                    <button class="bg-zinc-100 dark:bg-zinc-700 rounded-md p-2">
+                    <button
+                      @click="product.view = true"
+                      class="bg-zinc-100 dark:bg-zinc-700 rounded-md p-2"
+                    >
                       <Icon
                         class="w-5 h-5 text-zinc-500 dark:text-zinc-300"
                         icon="material-symbols:arrow-forward-rounded"
                       />
                     </button>
+                    <el-dialog
+                      title="View Chart"
+                      v-model="product.view"
+                      class="!w-full !max-w-2xl !rounded-2xl"
+                    >
+                      <line-chart-expand></line-chart-expand>
+                    </el-dialog>
                   </td>
                 </tr>
               </tbody>
