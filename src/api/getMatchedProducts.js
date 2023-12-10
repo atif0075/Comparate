@@ -18,7 +18,7 @@ export default async function getMatchedProducts(location, competitor) {
   };
 
   const response = await fetch(
-    "http://135.181.86.202:8000/api/getmatch/",
+    "https://135.181.86.202:8000/api/getmatch/",
     requestOptions
   );
   const result = await response.json();
