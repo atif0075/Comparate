@@ -16,6 +16,7 @@ const login = async () => {
       loading.value = false;
       store.isUser = true;
       store.userDetails = res;
+      store.userDetails.name = username.value;
       router.push("/");
     });
   } catch (error) {
@@ -24,10 +25,10 @@ const login = async () => {
 };
 </script>
 <template>
-  <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col min-h-screen bg-zinc-50 dark:bg-zinc-800">
     <div class="flex flex-col lg:flex-row flex-auto">
       <a class="lg:hidden mx-auto pt-10">
-        <img alt="Logo" src="../assets/logo-dark.svg" class="h-20" />
+        <img alt="Logo" src="../assets/logo.svg" class="h-20 invert" />
       </a>
 
       <div
@@ -40,7 +41,7 @@ const login = async () => {
             <div
               class="flex items-center space-x-1 font-medium text-sm ml-auto"
             >
-              <span class="text-zinc-500"> Not a Member yet? </span>
+              <span class="text-zinc-500 dark:text-zinc-300"> Not a Member yet? </span>
               <RouterLink to="/register" class="text-blue-600 font-semibold">
                 Sign Up
               </RouterLink>
@@ -51,7 +52,9 @@ const login = async () => {
             <div class="w-full">
               <div class="card-body">
                 <div class="text-start mb-10">
-                  <h1 class="text-zinc-900 mb-3 text-4xl font-semibold">
+                  <h1
+                    class="text-zinc-900 dark:text-zinc-50 mb-3 text-4xl font-semibold"
+                  >
                     Sign In
                   </h1>
                   <div class="text-zinc-400 font-medium text-sm">
@@ -66,7 +69,7 @@ const login = async () => {
                     name="username"
                     v-model="username"
                     autocomplete="off"
-                    class="w-full p-2.5 bg-zinc-50 focus:bg-zinc-100 rounded-md outline-none"
+                    class="w-full p-2.5 bg-zinc-50 focus:bg-zinc-100 rounded-md outline-none dark:bg-zinc-700 dark:focus:bg-zinc-600"
                   />
                 </div>
 
@@ -79,7 +82,7 @@ const login = async () => {
                     name="password"
                     v-model="password"
                     autocomplete="off"
-                    class="w-full pr-11 p-2.5 bg-zinc-50 focus:bg-zinc-100 rounded-md outline-none"
+                    class="w-full pr-11 p-2.5 bg-zinc-50 focus:bg-zinc-100 rounded-md outline-none dark:bg-zinc-700 dark:focus:bg-zinc-600"
                   />
                   <Icon
                     @click="showPass = !showPass"
@@ -120,15 +123,24 @@ const login = async () => {
                   </button>
 
                   <div class="flex items-center space-x-3">
-                    <div class="text-zinc-500 text-sm">Or</div>
+                    <div class="text-zinc-500 dark:text-zinc-300 text-sm">Or</div>
 
-                    <a href="#" class="bg-zinc-50 rounded-full p-3">
+                    <a
+                      href="#"
+                      class="bg-zinc-50 dark:bg-zinc-500 rounded-full p-3"
+                    >
                       <Icon icon="devicon:google" />
                     </a>
-                    <a href="#" class="bg-zinc-50 rounded-full p-3">
+                    <a
+                      href="#"
+                      class="bg-zinc-50 dark:bg-zinc-500 rounded-full p-3"
+                    >
                       <Icon icon="logos:facebook" />
                     </a>
-                    <a href="#" class="bg-zinc-50 rounded-full p-3">
+                    <a
+                      href="#"
+                      class="bg-zinc-50 dark:bg-zinc-500 rounded-full p-3"
+                    >
                       <Icon icon="logos:apple" />
                     </a>
                   </div>
