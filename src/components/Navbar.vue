@@ -41,11 +41,13 @@ const store = useStore();
             class="p-2.5 bg-zinc-100 rounded-full text-zinc-800 hover:bg-zinc-800 hover:text-zinc-50 transition dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-100 dark:hover:text-zinc-800"
           >
             <Icon
-              :icon="
-                store.isDark
-                  ? 'line-md:sunny-outline-to-moon-alt-loop-transition'
-                  : 'line-md:moon-filled-to-sunny-filled-loop-transition'
-              "
+              v-if="store.isDark"
+              icon="line-md:sunny-outline-to-moon-alt-loop-transition"
+              class="w-6 h-6"
+            />
+            <Icon
+              v-else
+              icon="line-md:moon-filled-to-sunny-filled-loop-transition"
               class="w-6 h-6"
             />
           </button>

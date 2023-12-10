@@ -55,10 +55,10 @@ const searchInput = ref(null);
     />
 
     <div class="flex flex-col mt-6">
-      <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="overflow-x-auto lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
           <div
-            class="overflow-hidden border border-zinc-200 dark:border-zinc-600 md:rounded-2xl"
+            class="overflow-hidden border border-zinc-200 dark:border-zinc-600 rounded-2xl"
           >
             <table
               class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700"
@@ -67,7 +67,7 @@ const searchInput = ref(null);
                 <tr>
                   <th
                     scope="col"
-                    class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
+                    class="py-3.5 px-4 text-sm whitespace-nowrap font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
                   >
                     <button
                       class="flex items-center gap-x-3 focus:outline-none"
@@ -78,32 +78,32 @@ const searchInput = ref(null);
 
                   <th
                     scope="col"
-                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
+                    class="px-4 py-3.5 text-sm whitespace-nowrap font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
                   >
                     {{ selectedLocation.name }} Price
                   </th>
 
                   <th
                     scope="col"
-                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
+                    class="px-4 py-3.5 text-sm whitespace-nowrap font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
                   >
                     {{ selectedCompetitor.name }} Price
                   </th>
                   <th
                     scope="col"
-                    class="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
+                    class="px-12 py-3.5 text-sm whitespace-nowrap font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
                   >
                     Price Difference
                   </th>
                   <th
                     scope="col"
-                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
+                    class="px-4 py-3.5 text-sm whitespace-nowrap font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
                   >
                     Chart
                   </th>
                   <th
                     scope="col"
-                    class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
+                    class="px-4 py-3.5 text-sm whitespace-nowrap font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
                   >
                     View
                   </th>
