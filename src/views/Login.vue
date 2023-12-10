@@ -41,7 +41,9 @@ const login = async () => {
             <div
               class="flex items-center space-x-1 font-medium text-sm ml-auto"
             >
-              <span class="text-zinc-500 dark:text-zinc-300"> Not a Member yet? </span>
+              <span class="text-zinc-500 dark:text-zinc-300">
+                Not a Member yet?
+              </span>
               <RouterLink to="/register" class="text-blue-600 font-semibold">
                 Sign Up
               </RouterLink>
@@ -69,7 +71,7 @@ const login = async () => {
                     name="username"
                     v-model="username"
                     autocomplete="off"
-                    class="w-full p-2.5 bg-zinc-50 focus:bg-zinc-100 rounded-md outline-none dark:bg-zinc-700 dark:focus:bg-zinc-600"
+                    class="w-full p-2.5 bg-zinc-100 focus:bg-zinc-200 rounded-md outline-none dark:bg-zinc-700 dark:focus:bg-zinc-600"
                   />
                 </div>
 
@@ -82,7 +84,7 @@ const login = async () => {
                     name="password"
                     v-model="password"
                     autocomplete="off"
-                    class="w-full pr-11 p-2.5 bg-zinc-50 focus:bg-zinc-100 rounded-md outline-none dark:bg-zinc-700 dark:focus:bg-zinc-600"
+                    class="w-full pr-11 p-2.5 bg-zinc-100 focus:bg-zinc-200 rounded-md outline-none dark:bg-zinc-700 dark:focus:bg-zinc-600"
                   />
                   <Icon
                     @click="showPass = !showPass"
@@ -123,7 +125,9 @@ const login = async () => {
                   </button>
 
                   <div class="flex items-center space-x-3">
-                    <div class="text-zinc-500 dark:text-zinc-300 text-sm">Or</div>
+                    <div class="text-zinc-500 dark:text-zinc-300 text-sm">
+                      Or
+                    </div>
 
                     <a
                       href="#"
