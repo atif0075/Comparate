@@ -22,7 +22,7 @@ export default async function getAuthToken(username, password) {
     );
     const result = await response.json();
 
-    return result;
+    return { result, response };
   } catch (error) {
     console.error("Error:", error);
     throw error; // Propagate the error to the caller if needed

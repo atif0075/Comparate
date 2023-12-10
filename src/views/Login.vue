@@ -3,6 +3,9 @@ import { ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import getAuthToken from "../api/getAuthToken";
 import { useStore } from "../stores";
+import { ElMessage, ElNotification } from "element-plus";
+import "element-plus/dist/index.css";
+import "element-plus/theme-chalk/dark/css-vars.css";
 const store = useStore();
 const showPass = ref(false);
 const username = ref("");
@@ -14,11 +17,50 @@ const login = async () => {
     loading.value = true;
     await getAuthToken(username.value, password.value).then((res) => {
       console.log(res);
-      loading.value = false;
-      store.isUser = true;
-      store.userDetails = res;
-      store.userDetails.name = username.value;
-      router.push("/");
+      if (res.response.status == 401) {
+        ElNotification({
+          title: "Error",
+          message: "Invalid Credentials",
+          type: "error",
+        });
+        loading.value = false;
+        return;
+      } else if (res.response.status == 500) {
+        ElNotification({
+          title: "Error",
+          message: "Server Error",
+          type: "error",
+        });
+        loading.value = false;
+        return;
+      } else if (res.response.status == 400) {
+        ElNotification({
+          title: "Error",
+          message: "Bad Request",
+          type: "error",
+        });
+        loading.value = false;
+        return;
+      } else if (res.response.status == 404) {
+        ElNotification({
+          title: "Error",
+          message: "Not Found",
+          type: "error",
+        });
+        loading.value = false;
+        return;
+      } else {
+        ElNotification({
+          title: "Success",
+          message: "Login Successful",
+          type: "success",
+        });
+        loading.value = false;
+        store.isUser = true;
+        store.userDetails = res.result;
+        store.userDetails.name = username.value;
+        router.push("/");
+      }
     });
   } catch (error) {
     console.error("Failed to get Auth Token:", error);
@@ -76,7 +118,7 @@ const login = async () => {
                     name="username"
                     v-model="username"
                     autocomplete="off"
-                    class="w-full p-2.5 bg-zinc-100 focus:bg-zinc-200 rounded-md outline-none dark:bg-zinc-700 dark:focus:bg-zinc-600"
+                    class="w-full p-2.5 bg-zinc-100 focus:bg-zinc-200 rounded-md outline-none dark:bg-zinc-700 dark:text-zinc-50 dark:focus:bg-zinc-600"
                   />
                 </div>
 
@@ -89,7 +131,7 @@ const login = async () => {
                     name="password"
                     v-model="password"
                     autocomplete="off"
-                    class="w-full pr-11 p-2.5 bg-zinc-100 focus:bg-zinc-200 rounded-md outline-none dark:bg-zinc-700 dark:focus:bg-zinc-600"
+                    class="w-full pr-11 p-2.5 bg-zinc-100 focus:bg-zinc-200 rounded-md outline-none dark:bg-zinc-700 dark:text-zinc-50 dark:focus:bg-zinc-600"
                   />
                   <Icon
                     @click="showPass = !showPass"
