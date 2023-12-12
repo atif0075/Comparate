@@ -11,7 +11,7 @@ export default async function getCompetitors() {
   };
 
   const response = await fetch(
-    "http://135.181.86.202:8000/api/competitors/",
+    "http://95.216.148.92:8000/api/competitors/",
     requestOptions
   );
   const result = await response.json();
