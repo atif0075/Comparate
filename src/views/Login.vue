@@ -149,12 +149,12 @@ const login = async () => {
                 >
                   <div></div>
 
-                  <a
-                    href="/metronic8/demo1/../demo1/authentication/layouts/fancy/reset-password.html"
+                  <RouterLink
+                    to="/forgot-password"
                     class="text-blue-600 hover:text-blue-500"
                   >
                     Forgot Password?
-                  </a>
+                  </RouterLink>
                 </div>
 
                 <div class="flex justify-between items-center">

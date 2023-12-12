@@ -145,20 +145,20 @@ const searchInput = ref(null);
                       class="px-2 py-1 inline-flex items-center space-x-1 text-xs leading-5 font-semibold rounded-lg"
                       :class="{
                         'bg-green-100 text-green-800':
-                          product['Price Difference'] > 0,
-                        'bg-red-100 text-red-800':
                           product['Price Difference'] < 0,
+                        'bg-red-100 text-red-800':
+                          product['Price Difference'] > 0,
                         'bg-zinc-100 text-zinc-800':
                           product['Price Difference'] === 0,
                       }"
                     >
                       <Icon
-                        v-if="product['Price Difference'] > 0"
+                        v-if="product['Price Difference'] < 0"
                         class="w-4 h-4 text-green-500"
                         icon="material-symbols:arrow-upward-alt"
                       />
                       <Icon
-                        v-else-if="product['Price Difference'] < 0"
+                        v-else-if="product['Price Difference'] > 0"
                         class="w-4 h-4 text-red-500"
                         icon="material-symbols:arrow-downward-alt"
                       />

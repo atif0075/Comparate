@@ -1,20 +1,20 @@
 <template>
-  <div class="w-56">
+  <div class="w-40">
     <Listbox v-model="selectedlang">
       <div class="relative mt-1">
         <ListboxButton
-          class="relative flex justify-start items-center space-x-3 w-full cursor-default bg-white dark:bg-zinc-700 dark:text-zinc-50 py-3 pl-3 pr-10 text-left rounded-lg focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+          class="relative flex justify-between items-center space-x-3 w-full cursor-default bg-white dark:bg-zinc-700 dark:text-zinc-50 p-3 text-left rounded-lg focus:outline-none focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm"
         >
           <div class="flex items-center space-x-2">
             <Icon :icon="selectedlang.icon" class="w-5 h-5" />
             <span class="block truncate">{{ selectedlang.name }}</span>
           </div>
-          <span class="pointer-events-none flex items-center pr-2">
+          <div class="pointer-events-none flex items-center">
             <Icon
               icon="eva:arrow-ios-downward-fill"
               class="w-5 h-5 rotate-180"
             />
-          </span>
+          </div>
         </ListboxButton>
 
         <transition
