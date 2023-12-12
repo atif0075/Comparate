@@ -1,10 +1,11 @@
 <script setup>
 import { computed, ref, toRef } from "vue";
-import { ElPagination, ElDialog } from "element-plus";
+import { ElPagination, ElDialog, vLoading } from "element-plus";
+import getMatchByPage from "../api/getMatchByPage";
 import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 const props = defineProps({
-  matchedProducts: {
+  products: {
     type: Array,
     required: true,
   },
@@ -16,37 +17,45 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  tableData: {
+    type: Object,
+    required: true,
+  },
 });
-// props to ref
-let matchedProducts = toRef(props, "matchedProducts");
-// limit data to 6
-const limit = ref([0, 6]);
+const loading = ref(false);
+let matchedProducts = ref(props.products || []);
 const currentPage = ref(1);
-const setLimit = (e) => {
+const setLimit = async (e) => {
+  loading.value = true;
   currentPage.value = e;
-  limit.value = [(e - 1) * 6, e * 6];
+  await getMatchByPage(
+    props.selectedLocation.id,
+    props.selectedCompetitor.id,
+    e
+  ).then((res) => {
+    loading.value = false;
+    matchedProducts.value = res["results"];
+  });
 };
+
 const search = ref("");
 
 // search computed
-const filteredMatchedProducts = computed(() => {
-  const filteredProducts = matchedProducts.value.filter((product) => {
-    const productName = product.Name.toLowerCase();
-    const searchValue = search.value.toLowerCase();
-    return searchValue === "" || productName.includes(searchValue);
-  });
+const searchMatchedProducts = computed(() => {
+  if (search.value === "") {
+    return matchedProducts.value;
+  } else {
+    return matchedProducts.value.filter((product) => {
+      return product.Name.toLowerCase().includes(search.value.toLowerCase());
+    });
+  }
+});
 
-  return filteredProducts;
-});
-const limitFilteredMatchedProducts = computed(() => {
-  return filteredMatchedProducts.value.slice(limit.value[0], limit.value[1]);
-});
 const searchInput = ref(null);
 </script>
 <template>
   <section class="container px-4 mx-auto">
     <input
-      v-if="limitFilteredMatchedProducts.length > 0"
       ref="searchInput"
       type="text"
       v-model="search"
@@ -61,10 +70,21 @@ const searchInput = ref(null);
             class="overflow-hidden border border-zinc-200 dark:border-zinc-600 rounded-2xl"
           >
             <table
+              v-loading="loading"
               class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700"
             >
               <thead class="bg-zinc-50 dark:bg-zinc-800">
                 <tr>
+                  <th
+                    scope="col"
+                    class="py-3.5 px-4 text-sm whitespace-nowrap font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
+                  >
+                    <button
+                      class="flex items-center gap-x-3 focus:outline-none"
+                    >
+                      <span> Product Id </span>
+                    </button>
+                  </th>
                   <th
                     scope="col"
                     class="py-3.5 px-4 text-sm whitespace-nowrap font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
@@ -110,13 +130,17 @@ const searchInput = ref(null);
                 </tr>
               </thead>
               <tbody
-                v-if="limitFilteredMatchedProducts.length > 0"
+                v-if="searchMatchedProducts && searchMatchedProducts.length > 0"
                 class="bg-white divide-y divide-zinc-200 dark:divide-zinc-700 dark:bg-zinc-900"
               >
-                <tr
-                  v-for="product in limitFilteredMatchedProducts"
-                  :key="product.id"
-                >
+                <tr v-for="product in searchMatchedProducts" :key="product.id">
+                  <td class="px-4 py-4 text-sm font-medium">
+                    <div>
+                      <h2 class="font-medium text-zinc-800 dark:text-white">
+                        {{ product["Product ID"] }}
+                      </h2>
+                    </div>
+                  </td>
                   <td
                     class="px-4 py-4 text-sm font-medium max-w-sm min-w-[24rem]"
                   >
@@ -166,7 +190,7 @@ const searchInput = ref(null);
                     </span>
                   </td>
                   <td class="px-4 py-4 text-sm whitespace-nowrap">
-                    <LineChart />
+                    <LineChart :productChart="product.chart" />
                   </td>
 
                   <td class="px-4 py-4 text-sm whitespace-nowrap">
@@ -184,7 +208,11 @@ const searchInput = ref(null);
                       v-model="product.view"
                       class="!w-full !max-w-2xl !rounded-2xl"
                     >
-                      <line-chart-expand></line-chart-expand>
+                      <LineChartExpand
+                        :productChart="product.chart"
+                        :competitorName="selectedCompetitor.name"
+                        :storeName="selectedLocation.name"
+                      />
                     </el-dialog>
                   </td>
                 </tr>
@@ -194,7 +222,7 @@ const searchInput = ref(null);
                   class="bg-white divide-y divide-zinc-200 dark:divide-zinc-700 dark:bg-zinc-900"
                 >
                   <td
-                    colspan="6"
+                    colspan="7"
                     class="px-4 py-4 text-sm font-medium text-center"
                   >
                     <div
@@ -228,16 +256,12 @@ const searchInput = ref(null);
     <div class="flex items-center justify-center mt-6">
       <el-pagination
         @current-change="setLimit($event)"
-        :page-size="6"
+        :page-size="10"
         :hide-on-single-page="true"
         background
         :current-page="currentPage"
         layout="prev, pager, next"
-        :total="
-          search === ''
-            ? matchedProducts.length
-            : filteredMatchedProducts.length
-        "
+        :total="tableData.count"
       />
     </div>
   </section>

@@ -45,12 +45,9 @@ onMounted(() => {
   getLocationsFunc();
   getCompetitorsFunc();
 });
-
+const tableData = ref({});
 watchEffect(async () => {
   if (selectedLocation.value && selectedCompetitor.value) {
-    console.log(
-      `Selected location: ${selectedLocation.value.id}, Selected competitor: ${selectedCompetitor.value.id}`
-    );
     try {
       loading.value = true;
       const res = await getMatchedProducts(
@@ -58,8 +55,9 @@ watchEffect(async () => {
         selectedCompetitor.value.id
       );
       loading.value = false;
-      console.log(res["data"]);
-      matchedProducts.value = res["data"];
+      console.log(res["results"]);
+      tableData.value = res;
+      matchedProducts.value = res["results"];
     } catch (error) {
       console.error("Failed to get matched products:", error);
     }
@@ -115,9 +113,10 @@ watchEffect(async () => {
       class="relative overflow-x-auto mt-10"
     >
       <product-table
-        :matchedProducts="matchedProducts"
+        :products="matchedProducts"
         :selectedLocation="selectedLocation"
         :selectedCompetitor="selectedCompetitor"
+        :tableData="tableData"
       />
     </div>
   </main>
