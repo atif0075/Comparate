@@ -177,13 +177,13 @@ const searchInput = ref(null);
                       }"
                     >
                       <Icon
-                        v-if="product['Price Difference'] < 0"
-                        class="w-4 h-4 text-green-500"
+                        v-if="product['Price Difference'] > 0"
+                        class="w-4 h-4 text-red-500"
                         icon="material-symbols:arrow-upward-alt"
                       />
                       <Icon
-                        v-else-if="product['Price Difference'] > 0"
-                        class="w-4 h-4 text-red-500"
+                        v-else-if="product['Price Difference'] < 0"
+                        class="w-4 h-4 text-green-500"
                         icon="material-symbols:arrow-downward-alt"
                       />
                       {{ product["Price Difference"].toFixed(2) }}
