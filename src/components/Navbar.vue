@@ -2,9 +2,18 @@
 import { useStore } from "../stores";
 
 const store = useStore();
+const toggleSidebar = () => {
+  // remove class
+  const sidebar = document.getElementById("sidebar");
+  if (sidebar.classList.contains("hidden")) {
+    sidebar.classList.remove("hidden");
+  } else {
+    sidebar.classList.add("hidden");
+  }
+};
 </script>
 <template>
-  <header class="bg-zinc-50 dark:bg-zinc-900">
+  <header class="bg-zinc-50 dark:bg-zinc-800 sticky top-0 left-0 z-[999]">
     <div class="mx-auto max-w-screen-xl px-4 py-3 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between sm:gap-4">
         <div>
@@ -38,7 +47,7 @@ const store = useStore();
               </span>
             </p>
           </button>
-          <button
+          <!-- <button
             @click="store.toggleDark()"
             class="p-2.5 bg-zinc-100 rounded-full text-zinc-800 hover:bg-zinc-800 hover:text-zinc-50 transition dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-100 dark:hover:text-zinc-800"
           >
@@ -58,6 +67,13 @@ const store = useStore();
             class="p-2.5 bg-red-50 rounded-full text-red-800 hover:bg-red-800 hover:text-red-50 transition dark:bg-red-800 dark:text-red-50 dark:hover:bg-red-50 dark:hover:text-red-800"
           >
             <Icon icon="ion:log-out-outline" class="w-6 h-6" />
+          </button> -->
+          <button
+            v-if="store.isUser"
+            @click="toggleSidebar"
+            class="text-zinc-500 lg:hidden dark:text-white focus:outline-none"
+          >
+            <Icon icon="solar:hamburger-menu-line-duotone" class="w-8 h-8" />
           </button>
         </div>
       </div>

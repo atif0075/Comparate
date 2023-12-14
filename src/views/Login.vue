@@ -4,8 +4,6 @@ import { RouterLink, useRouter } from "vue-router";
 import getAuthToken from "../api/getAuthToken";
 import { useStore } from "../stores";
 import { ElMessage, ElNotification } from "element-plus";
-import "element-plus/dist/index.css";
-import "element-plus/theme-chalk/dark/css-vars.css";
 const store = useStore();
 const showPass = ref(false);
 const username = ref("");

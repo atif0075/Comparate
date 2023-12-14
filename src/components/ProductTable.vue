@@ -2,8 +2,6 @@
 import { computed, ref, toRef } from "vue";
 import { ElPagination, ElDialog, vLoading } from "element-plus";
 import getMatchByPage from "../api/getMatchByPage";
-import "element-plus/dist/index.css";
-import "element-plus/theme-chalk/dark/css-vars.css";
 const props = defineProps({
   products: {
     type: Array,

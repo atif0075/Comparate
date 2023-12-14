@@ -7,7 +7,26 @@ const routes = [
     meta: {
       title: "Home",
     },
+    redirect: { name: "PriceComparison" },
     component: () => import("@views/Home.vue"),
+    children: [
+      {
+        path: "price-comparison",
+        name: "PriceComparison",
+        meta: {
+          title: "Price Comparison",
+        },
+        component: () => import("@views/PriceComparison.vue"),
+      },
+      {
+        path: "movement-analysis",
+        name: "MovementAnalysis",
+        meta: {
+          title: "Movement Analysis",
+        },
+        component: () => import("@views/MovementAnalysis.vue"),
+      },
+    ],
   },
   {
     path: "/login",
