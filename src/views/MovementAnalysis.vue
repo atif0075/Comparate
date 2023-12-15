@@ -88,5 +88,9 @@ const handleChange = (file) => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border: 3px solid #179a49;
+}
+.is-dragover {
+  border: 3px solid #179a49 !important;
 }
 </style>
