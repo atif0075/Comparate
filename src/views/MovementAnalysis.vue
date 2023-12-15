@@ -88,7 +88,7 @@ const handleChange = (file) => {
       top_sellers_by_quantity.length == 0 && top_sellers_by_revenue.length == 0
     "
     v-loading="loading"
-    class="rounded-lg overflow-hidden"
+    class="rounded-lg overflow-hidden mx-auto max-w-xl"
   >
     <el-upload drag :onChange="handleChange">
       <div class="flex justify-center items-center">
@@ -105,7 +105,7 @@ const handleChange = (file) => {
   border-radius: 12px;
   overflow: hidden;
 }
-.el-upload-dragger {
+/* .el-upload-dragger {
   height: 300px;
   display: flex;
   flex-direction: column;
@@ -115,5 +115,5 @@ const handleChange = (file) => {
 }
 .is-dragover {
   border: 3px solid #179a49 !important;
-}
+} */
 </style>
