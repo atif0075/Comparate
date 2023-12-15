@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { useStore } from "../stores";
-import { ElMenu } from "element-plus";
+import { useStore } from "../stores"; 
 const store = useStore();
 const routes = ref([
   {
@@ -60,7 +59,7 @@ const toggleSidebar = () => {
         </nav>
         <div class="flex justify-between items-center space-x-1">
           <button
-            @click="store.signout"
+            @click="store.logout"
             icon="material-symbols-light:logout"
             class="py-2.5 w-full bg-red-50 rounded-full text-red-800 hover:bg-red-800 hover:text-red-50 transition dark:bg-red-800 dark:text-red-50 dark:hover:bg-red-50 dark:hover:text-red-800"
           >

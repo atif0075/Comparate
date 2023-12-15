@@ -1,5 +1,6 @@
 <script setup>
 import { ElUpload, vLoading } from "element-plus";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import postUpload from "../api/postUpload";
 import postMovementMatch from "../api/postMovementMatch";
 import { reactive, ref } from "vue";
@@ -40,31 +41,46 @@ const handleChange = (file) => {
         type="border-card"
       >
         <el-tab-pane label="Top Sellers By Quantity">
-          <tsbq :top_sellers_by_quantity="top_sellers_by_quantity" />
+          <TopSellers :movement_analysis="top_sellers_by_quantity" />
         </el-tab-pane>
         <el-tab-pane label="Top Sellers By Revenue">
-          <tsbr :top_sellers_by_revenue="top_sellers_by_revenue" />
+          <TopSellers
+            :movement_analysis="top_sellers_by_revenue"
+            SellerType="Revenue"
+          />
         </el-tab-pane>
       </el-tabs>
-      <el-collapse v-if="movement_analysis.tsbq.length > 0">
-        <el-collapse-item>
-          <template #title>
-            <h1
-              class="text-2xl py-5 font-semibold text-zinc-800 dark:text-white md:text-3xl text-center"
-            >
-              Movement Match
-            </h1>
-          </template>
-          <el-tabs type="border-card">
-            <el-tab-pane label="Top Sellers By Quantity">
-              <MovementMatch :movement_analysis="movement_analysis.tsbq" />
-            </el-tab-pane>
-            <el-tab-pane label="Top Sellers By Revenue">
-              <MovementMatch :movement_analysis="movement_analysis.tsbr" />
-            </el-tab-pane>
-          </el-tabs>
-        </el-collapse-item>
-      </el-collapse>
+      <div
+        v-if="movement_analysis.tsbq.length > 0"
+        class="w-full rounded-2xl bg-zinc-100 dark:bg-zinc-700 p-2"
+      >
+        <Disclosure v-slot="{ open }">
+          <DisclosureButton
+            class="flex w-full justify-between items-center rounded-lg bg-zinc-100 dark:bg-zinc-700 dark:hover:bg-zinc-800 px-4 py-2 text-left text-sm font-medium dark:text-zinc-400 text-zinc-900 hover:bg-zinc-200 focus:outline-none focus-visible:ring focus-visible:ring-green-500/75"
+          >
+            <span class="text-2xl"> Movement Match </span>
+            <ChevronUpIcon
+              :class="open ? 'rotate-180 transform' : ''"
+              class="h-5 w-5 text-green-500"
+            />
+            <Icon
+              icon="bi:caret-down-fill"
+              class="w-4 h-4"
+              :class="open ? 'rotate-180 transform' : ''"
+            />
+          </DisclosureButton>
+          <DisclosurePanel class="px-4 pb-2 pt-4 text-sm text-gray-500">
+            <el-tabs type="border-card">
+              <el-tab-pane label="Top Sellers By Quantity">
+                <MovementMatch :movement_analysis="movement_analysis.tsbq" />
+              </el-tab-pane>
+              <el-tab-pane label="Top Sellers By Revenue">
+                <MovementMatch :movement_analysis="movement_analysis.tsbr" />
+              </el-tab-pane>
+            </el-tabs>
+          </DisclosurePanel>
+        </Disclosure>
+      </div>
     </div>
   </div>
   <div

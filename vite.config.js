@@ -20,7 +20,12 @@ export default defineConfig({
     },
   },
   plugins: [
-    vue(),
+    vue({
+      script: {
+        propsDestructure: true,
+        defineModel : true,
+      },
+    }),
     Components({
       dirs: ["./src/components", "./src/Iconify"],
     }),

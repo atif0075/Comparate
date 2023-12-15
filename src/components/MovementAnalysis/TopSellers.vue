@@ -1,17 +1,5 @@
 <script setup>
-import { computed, reactive, ref, watchEffect } from "vue";
-
-// Base Price : 0.05
-// Brand: "BOTTLE DEPOSIT"
-// Current On Hand:0
-// Item ID:"12015"
-// Last Cost:0
-// Price Divider:1
-// Projected Margin:1
-// Quantity Sold:3683
-// Receipt Alias:"BLT DEPOSIT SINGLE"
-// Revenue:184.15
-// Supplier ID:0
+import { computed, reactive, ref, toRef } from "vue";
 const td = [
   {
     name: "Base Price",
@@ -82,39 +70,28 @@ const td = [
 ];
 
 const props = defineProps({
-  top_sellers_by_quantity: {
-    type: Array,
-    default: () => [],
+  movement_analysis: {
+    type: Object,
+    default: () => {},
+  },
+  SellerType: {
+    type: String,
+    default: "Quantity",
   },
 });
-
-const data = reactive({
+// const movement_analysis = defineModel();
+const topSellers = toRef(props, "movement_analysis");
+const data = ref({
   sortBy: null,
   sortDesc: false,
 });
 
 const currentPage = ref(1);
-
-const setLimit = (limit) => {
-  currentPage.value = limit;
-};
-
+const pageSize = 10;
 const searchData = ref("");
 
-const handleSort = (column) => {
-  if (data.sortBy === column) {
-    data.sortDesc = !data.sortDesc;
-  } else {
-    data.sortBy = column;
-    data.sortDesc = false;
-  }
-};
-
 const filterTSQ = computed(() => {
-  let filteredData = props.top_sellers_by_quantity.slice(
-    (currentPage.value - 1) * 10,
-    currentPage.value * 10
-  );
+  let filteredData = topSellers.value;
 
   if (searchData.value) {
     const query = searchData.value.toLowerCase();
@@ -125,22 +102,35 @@ const filterTSQ = computed(() => {
       )
     );
   }
-
-  return filteredData;
-});
-
-// watch to sort data
-watchEffect(() => {
-  if (data.sortBy) {
-    filterTSQ.value.sort((a, b) => {
-      if (data.sortDesc) {
-        return a[data.sortBy] < b[data.sortBy] ? 1 : -1;
+  //   sort data
+  if (data.value.sortBy) {
+    filteredData.sort((a, b) => {
+      if (data.value.sortDesc) {
+        return a[data.value.sortBy] < b[data.value.sortBy] ? 1 : -1;
       } else {
-        return a[data.sortBy] > b[data.sortBy] ? 1 : -1;
+        return a[data.value.sortBy] > b[data.value.sortBy] ? 1 : -1;
       }
     });
   }
+
+  return filteredData.slice(
+    (currentPage.value - 1) * pageSize,
+    currentPage.value * pageSize
+  );
 });
+
+const handleSort = (column) => {
+  if (data.value.sortBy === column) {
+    data.value.sortDesc = !data.value.sortDesc;
+  } else {
+    data.value.sortBy = column;
+    data.value.sortDesc = false;
+  }
+};
+
+const setLimit = (limit) => {
+  currentPage.value = limit;
+};
 </script>
 <template>
   <section class="container px-4 mx-auto">
@@ -148,19 +138,23 @@ watchEffect(() => {
       <div>
         <div class="flex items-center gap-x-3">
           <h2 class="text-lg font-medium text-zinc-800 dark:text-white">
-            Top Sellers By Quantity
+            Top Sellers By {{ SellerType }}
           </h2>
 
           <span
             class="px-3 py-1 text-xs text-green-600 bg-green-100 rounded-full dark:bg-zinc-800 dark:text-green-400"
           >
-            {{ top_sellers_by_quantity.length }}
+            {{ topSellers.length }}
             Sellers</span
           >
         </div>
 
         <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-300">
-          This is a list of top sellers by quantity sold.
+          {{
+            SellerType === "Quantity"
+              ? "This is a list of top sellers by quantity."
+              : "This is a list of top sellers by revenue."
+          }}
         </p>
       </div>
     </div>
@@ -211,14 +205,14 @@ watchEffect(() => {
                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
                   >
                     <button
-                      @click="handleSort(item.key)"
+                      @click="handleSort(item.name)"
                       class="flex items-center gap-x-3 focus:outline-none whitespace-nowrap"
                     >
                       <span>
                         {{ item.name }}
                       </span>
                       <Icon
-                        v-if="data.sortBy === item.key"
+                        v-if="data.sortBy === item.name"
                         :icon="
                           data.sortDesc
                             ? 'bi:caret-down-fill'
@@ -233,7 +227,11 @@ watchEffect(() => {
               <tbody
                 class="bg-white divide-y divide-zinc-200 dark:divide-zinc-700 dark:bg-zinc-900"
               >
-                <tr v-for="(item, index) in filterTSQ" :key="index">
+                <tr
+                  v-for="(item, index) in filterTSQ"
+                  :key="index"
+                  class="cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                >
                   <td
                     v-for="items in td"
                     :key="items"
@@ -261,7 +259,7 @@ watchEffect(() => {
         background
         :current-page="currentPage"
         layout="prev, pager, next"
-        :total="top_sellers_by_quantity.length"
+        :total="topSellers.length"
       />
     </div>
   </section>

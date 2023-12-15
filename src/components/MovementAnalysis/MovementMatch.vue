@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref, watchEffect } from "vue";
+import { computed, reactive, ref, toRef } from "vue";
 const td = [
   {
     name: "Base Price",
@@ -71,38 +71,23 @@ const td = [
 
 const props = defineProps({
   movement_analysis: {
-    type: Array,
-    default: () => [],
+    type: Object,
+    default: () => {},
   },
 });
-
-const data = reactive({
+// const movement_analysis = defineModel();
+const topSellers = toRef(props, "movement_analysis");
+const data = ref({
   sortBy: null,
   sortDesc: false,
 });
 
 const currentPage = ref(1);
-
-const setLimit = (limit) => {
-  currentPage.value = limit;
-};
-
+const pageSize = 10;
 const searchData = ref("");
 
-const handleSort = (column) => {
-  if (data.sortBy === column) {
-    data.sortDesc = !data.sortDesc;
-  } else {
-    data.sortBy = column;
-    data.sortDesc = false;
-  }
-};
-
 const filterTSQ = computed(() => {
-  let filteredData = props.movement_analysis.slice(
-    (currentPage.value - 1) * 10,
-    currentPage.value * 10
-  );
+  let filteredData = topSellers.value;
 
   if (searchData.value) {
     const query = searchData.value.toLowerCase();
@@ -113,24 +98,37 @@ const filterTSQ = computed(() => {
       )
     );
   }
-
-  return filteredData;
-});
-
-// watch to sort data
-watchEffect(() => {
-  if (data.sortBy) {
-    filterTSQ.value.sort((a, b) => {
-      if (data.sortDesc) {
-        return a[data.sortBy] < b[data.sortBy] ? 1 : -1;
+  //   sort data
+  if (data.value.sortBy) {
+    filteredData.sort((a, b) => {
+      if (data.value.sortDesc) {
+        return a[data.value.sortBy] < b[data.value.sortBy] ? 1 : -1;
       } else {
-        return a[data.sortBy] > b[data.sortBy] ? 1 : -1;
+        return a[data.value.sortBy] > b[data.value.sortBy] ? 1 : -1;
       }
     });
   }
+
+  return filteredData.slice(
+    (currentPage.value - 1) * pageSize,
+    currentPage.value * pageSize
+  );
 });
+
+const handleSort = (column) => {
+  if (data.value.sortBy === column) {
+    data.value.sortDesc = !data.value.sortDesc;
+  } else {
+    data.value.sortBy = column;
+    data.value.sortDesc = false;
+  }
+};
+
+const setLimit = (limit) => {
+  currentPage.value = limit;
+};
 </script>
-<template> 
+<template>
   <section class="container px-4 mx-auto">
     <div class="sm:flex sm:items-center sm:justify-between">
       <div>
@@ -142,7 +140,7 @@ watchEffect(() => {
           <span
             class="px-3 py-1 text-xs text-green-600 bg-green-100 rounded-full dark:bg-zinc-800 dark:text-green-400"
           >
-            {{ movement_analysis.length }}
+            {{ topSellers.length }}
             Sellers</span
           >
         </div>
@@ -199,14 +197,14 @@ watchEffect(() => {
                     class="py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-zinc-500 dark:text-zinc-400"
                   >
                     <button
-                      @click="handleSort(item.key)"
+                      @click="handleSort(item.name)"
                       class="flex items-center gap-x-3 focus:outline-none whitespace-nowrap"
                     >
                       <span>
                         {{ item.name }}
                       </span>
                       <Icon
-                        v-if="data.sortBy === item.key"
+                        v-if="data.sortBy === item.name"
                         :icon="
                           data.sortDesc
                             ? 'bi:caret-down-fill'
@@ -261,7 +259,7 @@ watchEffect(() => {
         background
         :current-page="currentPage"
         layout="prev, pager, next"
-        :total="movement_analysis.length"
+        :total="topSellers.length"
       />
     </div>
   </section>
