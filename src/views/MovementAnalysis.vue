@@ -47,7 +47,14 @@ const handleChange = (file) => {
         </el-tab-pane>
       </el-tabs>
       <el-collapse v-if="movement_analysis.tsbq.length > 0">
-        <el-collapse-item title="Movement Match">
+        <el-collapse-item>
+          <template #title>
+            <h1
+              class="text-2xl py-5 font-semibold text-zinc-800 dark:text-white md:text-3xl text-center"
+            >
+              Movement Match
+            </h1>
+          </template>
           <el-tabs type="border-card">
             <el-tab-pane label="Top Sellers By Quantity">
               <MovementMatch :movement_analysis="movement_analysis.tsbq" />
