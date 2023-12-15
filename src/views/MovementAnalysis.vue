@@ -58,11 +58,9 @@ const handleChange = (file) => {
           <DisclosureButton
             class="flex w-full justify-between items-center rounded-lg bg-zinc-100 dark:bg-zinc-700 dark:hover:bg-zinc-800 px-4 py-2 text-left text-sm font-medium dark:text-zinc-400 text-zinc-900 hover:bg-zinc-200 focus:outline-none focus-visible:ring focus-visible:ring-green-500/75"
           >
+            <div></div>
             <span class="text-2xl"> Movement Match </span>
-            <ChevronUpIcon
-              :class="open ? 'rotate-180 transform' : ''"
-              class="h-5 w-5 text-green-500"
-            />
+        
             <Icon
               icon="bi:caret-down-fill"
               class="w-4 h-4"
