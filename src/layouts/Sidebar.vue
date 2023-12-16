@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { useStore } from "../stores"; 
+import { useStore } from "../stores";
 const store = useStore();
 const routes = ref([
   {
@@ -61,13 +61,14 @@ const toggleSidebar = () => {
           <button
             @click="store.logout"
             icon="material-symbols-light:logout"
-            class="py-2.5 w-full bg-red-50 rounded-full text-red-800 hover:bg-red-800 hover:text-red-50 transition dark:bg-red-800 dark:text-red-50 dark:hover:bg-red-50 dark:hover:text-red-800"
+            class="py-2.5 flex justify-center items-center space-x-2 w-full bg-red-50 rounded-full text-red-800 hover:bg-red-800 hover:text-red-50 transition dark:bg-red-800 dark:text-red-50 dark:hover:bg-red-50 dark:hover:text-red-800"
           >
-            Logout
+            <span> Logout </span>
+            <Icon icon="ion:log-out-outline" class="w-5 h-5" />
           </button>
           <button
             @click="store.toggleDark()"
-            class="p-2.5 bg-zinc-100 rounded-full text-zinc-800 hover:bg-zinc-800 hover:text-zinc-50 transition dark:bg-zinc-800 dark:text-zinc-50 dark:hover:bg-zinc-100 dark:hover:text-zinc-800"
+            class="p-2.5 bg-zinc-100 rounded-full text-zinc-800 hover:bg-zinc-800 hover:text-zinc-50 transition dark:bg-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-100 dark:hover:text-zinc-800"
           >
             <Icon
               v-if="store.isDark"
